@@ -107,7 +107,7 @@ class OrderDraftController extends Controller
     foreach ($draft->items as $item) {
         $item->update([
             'order_id' => $order->id,
-            'order_draft_id' => null
+            //'order_draft_id' => null
         ]);
     }
 
