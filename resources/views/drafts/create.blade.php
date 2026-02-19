@@ -10,9 +10,16 @@
     <div class="bg-white shadow rounded p-4 space-y-4">
         <div>
             <label class="block text-sm font-semibold mb-1">Reseller</label>
-            <input type="text" name="reseller"
-                class="w-full border rounded px-3 py-2"
-                placeholder="Contoh: Pujil / Ukhti / Novita">
+            <select name="reseller_id" required>
+    <option value="">-- Pilih Reseller --</option>
+    @foreach($resellers as $reseller)
+        <option value="{{ $reseller->id }}">
+            {{ $reseller->nama }}
+        </option>
+    @endforeach
+</select>
+
+
         </div>
 
         <div>
@@ -35,11 +42,24 @@
 
         <div id="items" class="space-y-3">
             <div class="grid grid-cols-5 gap-2">
-                <input name="product_name[]" placeholder="Produk"
-                    class="border rounded px-2 py-1" required>
+                <select name="product_id[]" 
+                    class="product-select border rounded px-2 py-1" required>
+                <option value="">Produk</option>
+                @foreach($products as $product)
+                    <option value="{{ $product->id }}"
+                        data-sizes='@json($product->ukuran_tersedia)'>
+                        {{ $product->nama_produk }}
+                    </option>
+                @endforeach
+            </select>
 
-                <input name="size[]" placeholder="Size"
-                    class="border rounded px-2 py-1">
+
+
+
+                <select name="size[]" class="size-select border rounded px-2 py-1">
+                    <option value="">Size</option>
+                </select>
+
 
                 <input name="series[]" placeholder="Series"
                     class="border rounded px-2 py-1">
@@ -70,11 +90,33 @@
 </form>
 
 <script>
+    document.addEventListener('change', function(e) {
+    if (e.target.classList.contains('product-select')) {
+
+        const selectedOption = e.target.selectedOptions[0];
+        const sizes = JSON.parse(selectedOption.getAttribute('data-sizes') || '[]');
+
+        const sizeSelect = e.target.parentElement.querySelector('.size-select');
+        sizeSelect.innerHTML = '<option value="">Size</option>';
+
+        sizes.forEach(size => {
+            sizeSelect.innerHTML += `<option value="${size}">${size}</option>`;
+        });
+    }
+});
 function addItem() {
     const div = document.createElement('div');
     div.className = 'grid grid-cols-5 gap-2';
     div.innerHTML = `
-        <input name="product_name[]" placeholder="Produk" class="border rounded px-2 py-1" required>
+        <select name="product_id[]" class="border rounded px-2 py-1" required>
+            <option value="">Produk</option>
+            @foreach($products as $product)
+                <option value="{{ $product->id }}">
+                    {{ $product->nama_produk }}
+                </option>
+            @endforeach
+        </select>
+
         <input name="size[]" placeholder="Size" class="border rounded px-2 py-1">
         <input name="series[]" placeholder="Series" class="border rounded px-2 py-1">
         <input name="qty[]" type="number" min="1" value="1" class="border rounded px-2 py-1">
@@ -82,5 +124,8 @@ function addItem() {
     `;
     document.getElementById('items').appendChild(div);
 }
+
 </script>
+
+
 @endsection

@@ -22,7 +22,7 @@
     <tbody>
         @foreach($orders as $order)
         <tr class="border-t">
-            <td class="p-3">{{ $order->reseller }}</td>
+            <td class="p-3"> {{ optional($order->reseller)->nama ?? '-' }}</td>
             <td class="p-3">{{ $order->customer_name }}</td>
             <td class="p-3">{{ $order->order_date }}</td>
             <td class="p-3">

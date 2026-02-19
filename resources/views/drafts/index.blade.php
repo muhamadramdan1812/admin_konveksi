@@ -27,39 +27,47 @@
     </thead>
     <tbody>
         @foreach($drafts as $draft)
-        <tr class="border-t">
-            <td class="p-3">{{ $draft->reseller }}</td>
-            <td class="p-3">{{ $draft->customer_name }}</td>
-            <td class="p-3">
-                <span class="px-2 py-1 text-sm rounded
-                    {{ $draft->status == 'final' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700' }}">
-                    {{ strtoupper($draft->status ?? 'draft') }}
-                </span>
-            </td>
-            <td class="p-3 flex gap-2">
-                <a href="{{ route('drafts.edit', $draft) }}"
-                   class="text-blue-600 hover:underline">Edit</a>
+    <tr class="border-t">
+    <td class="p-3">
+        {{ optional($draft->reseller)->nama ?? '-' }}
+    </td>
 
-                @if($draft->status !== 'final')
-                <form action="{{ route('drafts.finalize', $draft) }}" method="POST">
-                    @csrf
-                    <button class="text-green-600 hover:underline">
-                        Finalize
-                    </button>
-                </form>
-                @endif
+    <td class="p-3">
+        {{ $draft->customer_name }}
+    </td>
 
-                <form action="{{ route('drafts.destroy', $draft) }}" method="POST"
-                      onsubmit="return confirm('Hapus draft ini?')">
-                    @csrf
-                    @method('DELETE')
-                    <button class="text-red-600 hover:underline">
-                        Hapus
-                    </button>
-                </form>
-            </td>
-        </tr>
-        @endforeach
+    <td class="p-3">
+        <span class="px-2 py-1 text-sm rounded
+            {{ $draft->status == 'final' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700' }}">
+            {{ strtoupper($draft->status ?? 'draft') }}
+        </span>
+    </td>
+
+    <td class="p-3 flex gap-2">
+        <a href="{{ route('drafts.edit', $draft) }}"
+           class="text-blue-600 hover:underline">Edit</a>
+
+        @if($draft->status !== 'final')
+        <form action="{{ route('drafts.finalize', $draft) }}" method="POST">
+            @csrf
+            <button class="text-green-600 hover:underline">
+                Finalize
+            </button>
+        </form>
+        @endif
+
+        <form action="{{ route('drafts.destroy', $draft) }}" method="POST"
+              onsubmit="return confirm('Hapus draft ini?')">
+            @csrf
+            @method('DELETE')
+            <button class="text-red-600 hover:underline">
+                Hapus
+            </button>
+        </form>
+    </td>
+</tr>
+@endforeach
+
     </tbody>
 </table>
 </div>

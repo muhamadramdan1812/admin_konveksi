@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Reseller;
 
 class Order extends Model
 {
@@ -13,17 +12,13 @@ class Order extends Model
         'customer_name',
         'order_date',
         'deadline',
-        'status',
-        'reseller_id'
+        'status'
     ];
 
     public function items()
     {
         return $this->hasMany(OrderItem::class);
     }
-    public function reseller()
-{
-    return $this->belongsTo(Reseller::class);
-}
+    
 }
 

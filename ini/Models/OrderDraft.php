@@ -3,29 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Reseller;
 
 class OrderDraft extends Model
-    {
+{
     protected $fillable = [
-    'customer_name',
-    'reseller_id',
-    'status',
-    'note',
-    'source'
+        'reseller',
+        'customer_name',
+        'raw_text',
+        'status'
     ];
-
-
-
 
     public function items()
     {
         return $this->hasMany(OrderItem::class, 'order_draft_id');
     }
-    public function reseller()
-{
-    return $this->belongsTo(Reseller::class);
-}
-
 }
 

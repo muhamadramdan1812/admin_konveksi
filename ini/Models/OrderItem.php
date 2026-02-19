@@ -12,20 +12,12 @@ use Illuminate\Database\Eloquent\Model;
         'size',
         'series',
         'qty',
-        'note',
-        'reseller_id',
+        'note'
     ];
 
     public function draft()
     {
         return $this->belongsTo(OrderDraft::class, 'order_draft_id');
     }
-
-    public function product()
-        {
-            return $this->belongsTo(Product::class);
-        }
-
-
     }
 
