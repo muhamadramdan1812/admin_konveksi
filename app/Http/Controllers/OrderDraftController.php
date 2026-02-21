@@ -41,14 +41,13 @@ class OrderDraftController extends Controller
 ]);
 
         foreach ($request->product_id as $i => $productId) {
-            OrderItem::create([
-                'order_draft_id' => $draft->id,
-                'product_id' => $productId,
-                'size' => $request->size[$i] ?? null,
-                'series' => $request->series[$i] ?? null,
-                'qty' => $request->qty[$i],
-                'note' => $request->item_note[$i] ?? null,
-            ]);
+    $draft->items()->create([
+        'product_id' => $productId,
+        'size' => $request->size[$i] ?? null,
+        'series' => $request->series[$i] ?? null,
+        'qty' => $request->qty[$i] ?? 1,
+        'note' => $request->item_note[$i] ?? null,
+    ]);
 }
 
 
@@ -68,11 +67,11 @@ class OrderDraftController extends Controller
     ]);
 
         $draft->update([
-            'reseller' => $request->reseller,
-            'customer_name' => $request->customer_name,
-            'source' => $request->source,
-            'note' => $request->note
-        ]);
+                'reseller_id' => $request->reseller_id, // ✅ BENAR
+                'customer_name' => $request->customer_name,
+                'source' => $request->source,
+                'note' => $request->note
+            ]);
 
         // hapus item lama
         $draft->items()->delete();
@@ -103,10 +102,10 @@ class OrderDraftController extends Controller
     // buat order utama
     $order = Order::create([
         'order_draft_id' => $draft->id,
-        'reseller' => $draft->reseller,
-        'customer_name' => $draft->customer_name,
-        'order_date' => now(),
-        'status' => 'order'
+        'reseller_id'    => $draft->reseller_id, // ✅ INI YANG BENAR
+        'customer_name'  => $draft->customer_name,
+        'order_date'     => now(),
+        'status'         => 'order'
     ]);
 
     // pindahkan item

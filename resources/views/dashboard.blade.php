@@ -61,7 +61,7 @@
             @forelse($recentOrders as $order)
                 <tr class="border-b">
                     <td class="py-2">{{ $order->customer_name }}</td>
-                    <td class="py-2">{{ $order->reseller }}</td>
+                    <td class="py-2">{{ $order->id }}</td>
                     <td class="py-2">{{ $order->order_date }}</td>
                     <td class="py-2">
                         <span class="px-2 py-1 rounded text-xs bg-blue-100 text-blue-600">

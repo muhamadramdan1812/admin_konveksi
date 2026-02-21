@@ -9,12 +9,11 @@ class Order extends Model
 {
     protected $fillable = [
         'order_draft_id',
-        'reseller',
+        'reseller_id',
         'customer_name',
         'order_date',
         'deadline',
         'status',
-        'reseller_id'
     ];
 
     public function items()
@@ -23,7 +22,7 @@ class Order extends Model
     }
     public function reseller()
 {
-    return $this->belongsTo(Reseller::class);
+    return $this->belongsTo(Reseller::class, 'reseller_id', 'id');
 }
 }
 
